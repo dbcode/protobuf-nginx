@@ -55,7 +55,7 @@ typedef struct {
 
 /* protobuf module identifier */
 
-#define NGX_PROTOBUF_MODULE 0x50425546  /* "PBUF */
+#define NGX_PROTOBUF_MODULE 0x50425546  /* "PBUF" */
 
 /* forward declaration of context object */
 
