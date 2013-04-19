@@ -1,0 +1,55 @@
+* Extend pack/unpack methods to handle incremental pack and unpack.
+
+  - on pack, methods should return NGX_AGAIN if they need more space
+    to pack the entire message.
+  - on unpack, return NGX_AGAIN if we need more data to finish a field.
+    note that it's possible to return NGX_OK even not all of the input
+    has been parsed (e.g. if we finish a repeated field exactly at the
+    boundary, we will return NGX_OK, but additional input can add more
+    fields).
+  - state should be saved to / restored from the protobuf context.
+    for nested messages, this may include a stack of some kind.
+  - caller should check the context to see if the pack or unpack was
+    complete when expected to be.
+
+* Add support for unknown fields.
+
+  - C++ code generator disables this support if the .proto file options
+    include "optimize_for=LITE_RUNTIME".  we can do the same.
+  - unknown fields can go in an ngx_array_t of ngx_protobuf_value_t.
+
+* Generate message__is_initialized methods.
+
+  - returns 1 if all required fields are set, and 0 otherwise.  if the
+    message has no required fields, always returns 1.
+
+* Add support for default values.
+
+  - when a message is fully unpacked, any missing fields with default
+    values will be initialized to those values.
+
+* Consider how / whether to handle services in the .proto files.  from
+  the protobuf documentation:
+
+  service SearchService {
+    rpc Search (SearchRequest) returns (SearchResponse);
+  }
+
+  this is supposed to define an RPC interface that takes a SearchRequest
+  and responds with a SearchResponse.  in nginx, we could generate a
+  SearchService (ngx_search_service) module that has a handler in it
+  that expects a POST of a serialized ngx_search_request_t object, and
+  responds with a serialized ngx_search_response_t object.  the module
+  can take care of everything except filling in the actual body of this
+  function:
+
+  ngx_search_response_t *
+  ngx_search_service_handler(ngx_search_request_t *req);
+
+  in the nginx config, the handler would be invoked as:
+
+  location = /searchService {
+    ngx_search_service;
+  }
+
+  or something along those lines.

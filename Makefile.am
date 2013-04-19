@@ -1,0 +1,5 @@
+AUTOMAKE_OPTIONS = foreign
+
+SUBDIRS = nginx protongx
+
+EXTRA_DIST = README.md LICENSE CHANGES TODO
