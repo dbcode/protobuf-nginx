@@ -1,3 +1,14 @@
+* Add working examples of nginx modules that use protobuf messages.
+
+  - working version of user cookie filter module described in the
+    README.md.
+  - protobuf RPC module (reads input message from request body of
+    a POST, responds with serialized output message).  Can be used
+    as an example of what code generation of services would look like.
+  - logging module (access logs in protobuf format).  Can write
+    compressed logs of {length, message} pairs.  Should include a
+    simple utility to parse the gzipped protobuf logs.
+
 * Extend pack/unpack methods to handle incremental pack and unpack.
 
   - on pack, methods should return NGX_AGAIN if they need more space
