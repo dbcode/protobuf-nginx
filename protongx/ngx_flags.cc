@@ -9,6 +9,7 @@ namespace compiler {
 namespace nginx {
 
 Flags::Flags(const Descriptor *desc) :
+  has_required_(false),
   has_array_(false),
   has_message_(false),
   has_packed_(false),
@@ -28,6 +29,8 @@ Flags::Flags(const Descriptor *desc) :
       if (field->type() != FieldDescriptor::TYPE_MESSAGE) {
         has_repnm_ = true;
       }
+    } else if (field->is_required()) {
+      has_required_ = true;
     }
     if (field->is_packable() && field->options().packed()) {
       has_packed_ = true;

@@ -67,6 +67,10 @@ private:
   static bool IsFixedWidth(const FieldDescriptor *field);
   static bool FieldIsPointer(const FieldDescriptor *field); 
 
+  // ngx_is_initialized.cc
+  static void GenerateIsInitialized(const Descriptor *desc,
+				    io::Printer& printer);
+
   // ngx_methods.cc
   static void GenerateMethodDecls(const Descriptor* desc,
                                   io::Printer& printer);

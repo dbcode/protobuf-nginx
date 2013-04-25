@@ -12,6 +12,7 @@ protongx_SOURCES = \
 	ngx_field_util.cc \
 	ngx_flags.cc \
 	ngx_generate.cc \
+	ngx_is_initialized.cc \
 	ngx_main.cc \
 	ngx_methods.cc \
 	ngx_module.cc \

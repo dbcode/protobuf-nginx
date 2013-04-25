@@ -55,11 +55,13 @@ am_protongx_OBJECTS = protongx-ngx_add.$(OBJEXT) \
 	protongx-ngx_descriptor_util.$(OBJEXT) \
 	protongx-ngx_extension.$(OBJEXT) \
 	protongx-ngx_field_util.$(OBJEXT) protongx-ngx_flags.$(OBJEXT) \
-	protongx-ngx_generate.$(OBJEXT) protongx-ngx_main.$(OBJEXT) \
-	protongx-ngx_methods.$(OBJEXT) protongx-ngx_module.$(OBJEXT) \
-	protongx-ngx_name.$(OBJEXT) protongx-ngx_pack.$(OBJEXT) \
-	protongx-ngx_print.$(OBJEXT) protongx-ngx_size.$(OBJEXT) \
-	protongx-ngx_typedef.$(OBJEXT) protongx-ngx_unpack.$(OBJEXT)
+	protongx-ngx_generate.$(OBJEXT) \
+	protongx-ngx_is_initialized.$(OBJEXT) \
+	protongx-ngx_main.$(OBJEXT) protongx-ngx_methods.$(OBJEXT) \
+	protongx-ngx_module.$(OBJEXT) protongx-ngx_name.$(OBJEXT) \
+	protongx-ngx_pack.$(OBJEXT) protongx-ngx_print.$(OBJEXT) \
+	protongx-ngx_size.$(OBJEXT) protongx-ngx_typedef.$(OBJEXT) \
+	protongx-ngx_unpack.$(OBJEXT)
 protongx_OBJECTS = $(am_protongx_OBJECTS)
 protongx_DEPENDENCIES =
 protongx_LINK = $(CXXLD) $(protongx_CXXFLAGS) $(CXXFLAGS) \
@@ -193,6 +195,7 @@ protongx_SOURCES = \
 	ngx_field_util.cc \
 	ngx_flags.cc \
 	ngx_generate.cc \
+	ngx_is_initialized.cc \
 	ngx_main.cc \
 	ngx_methods.cc \
 	ngx_module.cc \
@@ -293,6 +296,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/protongx-ngx_field_util.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/protongx-ngx_flags.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/protongx-ngx_generate.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/protongx-ngx_is_initialized.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/protongx-ngx_main.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/protongx-ngx_methods.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/protongx-ngx_module.Po@am__quote@
@@ -414,6 +418,20 @@ protongx-ngx_generate.obj: ngx_generate.cc
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='ngx_generate.cc' object='protongx-ngx_generate.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(protongx_CXXFLAGS) $(CXXFLAGS) -c -o protongx-ngx_generate.obj `if test -f 'ngx_generate.cc'; then $(CYGPATH_W) 'ngx_generate.cc'; else $(CYGPATH_W) '$(srcdir)/ngx_generate.cc'; fi`
+
+protongx-ngx_is_initialized.o: ngx_is_initialized.cc
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(protongx_CXXFLAGS) $(CXXFLAGS) -MT protongx-ngx_is_initialized.o -MD -MP -MF $(DEPDIR)/protongx-ngx_is_initialized.Tpo -c -o protongx-ngx_is_initialized.o `test -f 'ngx_is_initialized.cc' || echo '$(srcdir)/'`ngx_is_initialized.cc
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/protongx-ngx_is_initialized.Tpo $(DEPDIR)/protongx-ngx_is_initialized.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='ngx_is_initialized.cc' object='protongx-ngx_is_initialized.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(protongx_CXXFLAGS) $(CXXFLAGS) -c -o protongx-ngx_is_initialized.o `test -f 'ngx_is_initialized.cc' || echo '$(srcdir)/'`ngx_is_initialized.cc
+
+protongx-ngx_is_initialized.obj: ngx_is_initialized.cc
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(protongx_CXXFLAGS) $(CXXFLAGS) -MT protongx-ngx_is_initialized.obj -MD -MP -MF $(DEPDIR)/protongx-ngx_is_initialized.Tpo -c -o protongx-ngx_is_initialized.obj `if test -f 'ngx_is_initialized.cc'; then $(CYGPATH_W) 'ngx_is_initialized.cc'; else $(CYGPATH_W) '$(srcdir)/ngx_is_initialized.cc'; fi`
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/protongx-ngx_is_initialized.Tpo $(DEPDIR)/protongx-ngx_is_initialized.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='ngx_is_initialized.cc' object='protongx-ngx_is_initialized.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(protongx_CXXFLAGS) $(CXXFLAGS) -c -o protongx-ngx_is_initialized.obj `if test -f 'ngx_is_initialized.cc'; then $(CYGPATH_W) 'ngx_is_initialized.cc'; else $(CYGPATH_W) '$(srcdir)/ngx_is_initialized.cc'; fi`
 
 protongx-ngx_main.o: ngx_main.cc
 @am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(protongx_CXXFLAGS) $(CXXFLAGS) -MT protongx-ngx_main.o -MD -MP -MF $(DEPDIR)/protongx-ngx_main.Tpo -c -o protongx-ngx_main.o `test -f 'ngx_main.cc' || echo '$(srcdir)/'`ngx_main.cc

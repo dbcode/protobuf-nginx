@@ -23,11 +23,6 @@
   - caller should check the context to see if the pack or unpack was
     complete when expected to be.
 
-* Generate message__is_initialized methods.
-
-  - returns 1 if all required fields are set, and 0 otherwise.  if the
-    message has no required fields, always returns 1.
-
 * Add support for default values.
 
   - when a message is fully unpacked, any missing fields with default

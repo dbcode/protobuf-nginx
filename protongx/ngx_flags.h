@@ -16,6 +16,7 @@ public:
   ~Flags() {}
 
 public:
+  bool has_required() const { return has_required_; }
   bool has_array() const { return has_array_; }
   bool has_message() const { return has_message_; }
   bool has_packed() const { return has_packed_; }
@@ -28,6 +29,7 @@ public:
   bool has_repnm() const { return has_repnm_; }
 
 private:
+  bool has_required_;
   bool has_array_;
   bool has_message_;
   bool has_packed_;

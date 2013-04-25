@@ -107,13 +107,16 @@ Generator::GenerateMethodDecls(const Descriptor *desc, io::Printer& printer)
                 "\n"
                 "#define $root$__clear(obj) \\\n"
                 "    ngx_memzero(obj, sizeof($type$))\n"
-                "\n"                
+                "\n"
+		"ngx_int_t $root$__is_initialized(\n"
+		"    $type$ *obj);\n"
+		"\n"
                 "ngx_int_t $root$__unpack(\n"
                 "    $type$ *obj,\n"
                 "    ngx_protobuf_context_t *ctx);\n"
                 "\n"
                 "size_t $root$__size(\n"
-                "     $type$ *obj);\n"
+                "    $type$ *obj);\n"
                 "\n"
                 "ngx_int_t $root$__pack(\n"
                 "    $type$ *obj,\n"
@@ -150,6 +153,7 @@ Generator::GenerateMethods(const Descriptor* desc, io::Printer& printer)
   printer.Print("/* $name$ message methods */\n"
                 "\n", "name", desc->full_name());
 
+  GenerateIsInitialized(desc, printer);
   GenerateUnpack(desc, printer);
   GenerateSize(desc, printer);
   GeneratePack(desc, printer);

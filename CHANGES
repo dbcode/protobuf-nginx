@@ -6,6 +6,11 @@ Changes with protobuf-nginx 1.1                                  24 Apr 2013
 
        options optimize_for = LITE_RUNTIME;
 
+    *) Added __is_initialized methods for messages.  For messages with
+       required fields, methods return 1 if all required fields are
+       defined and 0 otherwise.  Otherwise (i.e. for messages with no 
+       required fields), methods always return a value of 1.
+
 Changes with protobuf-nginx 1.0                                  19 Apr 2013
 
     *) Initial release
