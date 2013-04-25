@@ -124,8 +124,8 @@ Generator::GenerateSize(const Descriptor* desc, io::Printer& printer)
   if (flags.has_packed() || flags.has_message()) {
     printer.Print("size_t      n;\n");
   }
-  if (iterates) {
-    // we need to iterate any repeated non-fixed field
+  if (iterates || HasUnknownFields(desc)) {
+    // we need to iterate any repeated non-fixed field or unknown fields
     printer.Print("ngx_uint_t  i;\n");
   }
   printer.Print("\n");
@@ -327,6 +327,22 @@ Generator::GenerateSize(const Descriptor* desc, io::Printer& printer)
     FullSimpleIf(printer, vars,
                  "obj->__extensions != NULL",
                  "size += ngx_protobuf_size_extensions(obj->__extensions);");
+  }
+
+  if (HasUnknownFields(desc)) {
+    printer.Print("\n");
+    CuddledIf(printer, vars,
+	      "obj->__unknown != NULL",
+	      "&& obj->__unknown->elts != NULL\n"
+	      "&& obj->__unknown->nelts > 0");
+    printer.Print("ngx_protobuf_unknown_field_t *unk = "
+		  "obj->__unknown->elts;\n"
+		  "\n"
+		  "for (i = 0; i < obj->__unknown->nelts; ++i) ");
+    OpenBrace(printer);
+    printer.Print("size += ngx_protobuf_size_unknown_field(unk + i);\n");
+    CloseBrace(printer);
+    CloseBrace(printer);
   }
 
   printer.Print("\n"

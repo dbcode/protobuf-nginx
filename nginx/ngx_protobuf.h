@@ -755,4 +755,14 @@ ngx_int_t ngx_protobuf_pack_extensions(ngx_rbtree_t *extensions,
                                        uint32_t upper,
                                        ngx_protobuf_context_t *ctx);
 
+ngx_int_t ngx_protobuf_unpack_unknown_field(uint32_t field,
+					    ngx_protobuf_wiretype_e wire,
+					    ngx_protobuf_context_t *ctx,
+					    ngx_array_t **unknown);
+
+size_t ngx_protobuf_size_unknown_field(ngx_protobuf_unknown_field_t *field);
+
+ngx_int_t ngx_protobuf_pack_unknown_field(ngx_protobuf_unknown_field_t *field,
+					  ngx_protobuf_context_t *ctx);
+
 #endif /* _NGX_PROTOBUF_H_INCLUDED_ */

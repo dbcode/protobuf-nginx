@@ -23,12 +23,6 @@
   - caller should check the context to see if the pack or unpack was
     complete when expected to be.
 
-* Add support for unknown fields.
-
-  - C++ code generator disables this support if the .proto file options
-    include "optimize_for=LITE_RUNTIME".  we can do the same.
-  - unknown fields can go in an ngx_array_t of ngx_protobuf_value_t.
-
 * Generate message__is_initialized methods.
 
   - returns 1 if all required fields are set, and 0 otherwise.  if the

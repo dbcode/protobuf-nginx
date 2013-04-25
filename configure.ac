@@ -6,7 +6,7 @@ AC_GNU_SOURCE
 
 dnl For Automake
 PACKAGE=protobuf-nginx
-VERSION=1.0
+VERSION=1.1
 
 dnl Initialize automake stuff
 AM_INIT_AUTOMAKE($PACKAGE, $VERSION)

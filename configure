@@ -3790,7 +3790,7 @@ _ACEOF
 
 
 PACKAGE=protobuf-nginx
-VERSION=1.0
+VERSION=1.1
 
 am__api_version='1.11'
 

@@ -1,3 +1,11 @@
+Changes with protobuf-nginx 1.1                                  24 Apr 2013
+
+    *) Added support for unknown fields.  Unknown fields are parsed into
+       an array of ngx_protobuf_unknown_field_t.  Generation of this code
+       can be suppressed by setting the following file-level option:
+
+       options optimize_for = LITE_RUNTIME;
+
 Changes with protobuf-nginx 1.0                                  19 Apr 2013
 
     *) Initial release

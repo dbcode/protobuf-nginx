@@ -6,18 +6,6 @@ namespace protobuf {
 namespace compiler {
 namespace nginx {
 
-bool
-Generator::HasExtensionFields(const Descriptor *desc)
-{
-  for (int i = 0; i < desc->field_count(); ++i) {
-    if (desc->field(i)->is_extension()) {
-      return true;
-    }
-  }
-
-  return false;
-}
-
 void
 Generator::GenerateMethodDecls(const Descriptor *desc, io::Printer& printer)
 {

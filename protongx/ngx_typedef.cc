@@ -1,4 +1,5 @@
 #include <ngx_generator.h>
+#include <google/protobuf/descriptor.pb.h>
 
 namespace google {
 namespace protobuf {
@@ -75,9 +76,14 @@ Generator::GenerateTypedef(const Descriptor* desc, io::Printer& printer)
   unsigned int maxname = 0;
   bool hasptr = false;
   bool hasself = false;
+  bool unknown = HasUnknownFields(desc);
 
   if (desc->extension_range_count() > 0) {
     maxtype = sizeof("ngx_rbtree_t") - 1;
+    hasptr = true;
+  } else if (unknown) {
+    maxtype = sizeof("ngx_array_t") - 1;
+    hasptr = true;
   } else {
     maxtype = sizeof("uint32_t") - 1;
   }
@@ -148,11 +154,24 @@ Generator::GenerateTypedef(const Descriptor* desc, io::Printer& printer)
 
   if (desc->extension_range_count() > 0) {
     std::map<std::string, std::string> vars;
-    std::string tree = "ngx_rbtree_t";
+    std::string ftype = "ngx_rbtree_t";
 
-    vars["type"] = tree;
-    vars["tspace"] = Spaces(maxtype - tree.length());
+    vars["type"] = ftype;
+    vars["tspace"] = Spaces(maxtype - ftype.length());
     printer.Print(vars, "$type$$tspace$ *__extensions;\n");
+  }
+
+  // unknown fields (if applicable)
+
+  if (unknown) {
+    std::map<std::string, std::string> vars;
+    std::string ftype = "ngx_array_t";
+
+    vars["type"] = ftype;
+    vars["tspace"] = Spaces(maxtype - ftype.length());
+    printer.Print(vars,
+		  "/* ngx_protobuf_unknown_field_t */\n"
+		  "$type$$tspace$ *__unknown;\n");
   }
 
   // the "has" bits are last

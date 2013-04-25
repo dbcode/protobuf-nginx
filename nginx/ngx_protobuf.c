@@ -471,7 +471,8 @@ ngx_protobuf_unpack_extension(uint32_t field,
   /* look for the extension based on field number */
   rnode = ngx_protobuf_find_node(registry, field);
   if (rnode == NULL) {
-    return ngx_protobuf_skip(pos, end, wire);
+    /* caller will either skip or unpack unknown field */
+    return NGX_DECLINED;
   }
 
   desc = rnode->descriptor;
@@ -1204,3 +1205,103 @@ ngx_protobuf_pack_extensions(ngx_rbtree_t *extensions,
                                      ngx_protobuf_pack_extension,
                                      ctx);
 }
+
+ngx_int_t
+ngx_protobuf_unpack_unknown_field(uint32_t field,
+				  ngx_protobuf_wiretype_e wire,
+				  ngx_protobuf_context_t *ctx,
+				  ngx_array_t **unknown)
+{
+  u_char                        **pos = &ctx->buffer.pos;
+  u_char                         *end = ctx->buffer.last;
+  ngx_protobuf_unknown_field_t   *u;
+  ngx_int_t                       rc;
+
+  u = ngx_protobuf_push_array(unknown, ctx->pool,
+			      sizeof(ngx_protobuf_unknown_field_t));
+  if (u == NULL) {
+    return NGX_ERROR;
+  }
+
+  switch (wire) {
+  case NGX_PROTOBUF_WIRETYPE_VARINT:
+    rc = ngx_protobuf_read_uint64(pos, end, &u->value.u.v_uint64);
+    break;
+  case NGX_PROTOBUF_WIRETYPE_FIXED64:
+    rc = ngx_protobuf_read_fixed64(pos, end, &u->value.u.v_uint64);
+    break;
+  case NGX_PROTOBUF_WIRETYPE_LENGTH_DELIMITED:
+    rc = ngx_protobuf_read_string(pos, end, &u->value.u.v_bytes,
+				  (ctx->reuse_strings) ? NULL : ctx->pool);
+    break;
+  case NGX_PROTOBUF_WIRETYPE_FIXED32:
+    rc = ngx_protobuf_read_fixed32(pos, end, &u->value.u.v_uint32);
+    break;
+  default:
+    rc = NGX_ABORT;
+    break;
+  }
+
+  return rc;
+}
+
+size_t
+ngx_protobuf_size_unknown_field(ngx_protobuf_unknown_field_t *field)
+{
+  size_t n;
+
+  switch (field->wire_type) {
+  case NGX_PROTOBUF_WIRETYPE_VARINT:
+    n = ngx_protobuf_size_uint64_field(field->value.u.v_uint64, field->number);
+    break;
+  case NGX_PROTOBUF_WIRETYPE_FIXED64:
+    n = ngx_protobuf_size_fixed64_field(field->number);
+    break;
+  case NGX_PROTOBUF_WIRETYPE_LENGTH_DELIMITED:
+    n = ngx_protobuf_size_string_field(&field->value.u.v_bytes, field->number);
+    break;
+  case NGX_PROTOBUF_WIRETYPE_FIXED32:
+    n = ngx_protobuf_size_fixed32_field(field->number);
+    break;
+  default:
+    /* we won't pack an unknown field of a bogus wire type */
+    n = 0;
+    break;
+  }
+
+  return n;
+}
+
+ngx_int_t
+ngx_protobuf_pack_unknown_field(ngx_protobuf_unknown_field_t *field,
+				ngx_protobuf_context_t *ctx)
+{
+  switch (field->wire_type) {
+  case NGX_PROTOBUF_WIRETYPE_VARINT:
+    ctx->buffer.pos = ngx_protobuf_write_uint64_field(ctx->buffer.pos,
+						      field->value.u.v_uint64,
+						      field->number);
+    break;
+  case NGX_PROTOBUF_WIRETYPE_FIXED64:
+    ctx->buffer.pos = ngx_protobuf_write_fixed64_field(ctx->buffer.pos,
+						       field->value.u.v_uint64,
+						       field->number);
+    break;
+  case NGX_PROTOBUF_WIRETYPE_LENGTH_DELIMITED:
+    ctx->buffer.pos = ngx_protobuf_write_string_field(ctx->buffer.pos,
+						      &field->value.u.v_bytes,
+						      field->number);
+    break;
+  case NGX_PROTOBUF_WIRETYPE_FIXED32:
+    ctx->buffer.pos = ngx_protobuf_write_fixed32_field(ctx->buffer.pos,
+						       field->value.u.v_uint32,
+						       field->number);
+    break;
+  default:
+    /* we won't pack an unknown field of a bogus wire type */
+    break;
+  }
+
+  return NGX_OK;
+}
+

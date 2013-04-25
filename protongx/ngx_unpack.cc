@@ -8,6 +8,21 @@ namespace compiler {
 namespace nginx {
 
 void
+Generator::GenerateUnpackUnknown(const Descriptor *desc, io::Printer& printer)
+{
+  if (HasUnknownFields(desc)) {
+    printer.Print("rc = ngx_protobuf_unpack_unknown_field(field, wire, ctx,\n"
+		  "    &obj->__unknown);\n"
+		  "if (rc != NGX_OK) ");
+    OpenBrace(printer);
+    printer.Print("return rc;\n");
+    CloseBrace(printer);
+  } else {
+    SkipUnknown(printer);
+  }
+}
+
+void
 Generator::GenerateUnpack(const Descriptor* desc, io::Printer& printer)
 {
   Flags flags(desc);
@@ -158,7 +173,9 @@ Generator::GenerateUnpack(const Descriptor* desc, io::Printer& printer)
   if (flags.has_packed()) {
     printer.Print("u_char       *mend;\n");
   }
-  if (flags.has_message() || desc->extension_range_count() > 0) {
+  if (flags.has_message()
+      || desc->extension_range_count() > 0
+      || HasUnknownFields(desc)) {
     printer.Print("ngx_int_t     rc;\n");
   }
 
@@ -631,9 +648,15 @@ Generator::GenerateUnpack(const Descriptor* desc, io::Printer& printer)
                   "rc = ngx_protobuf_unpack_extension(field, wire, ctx,\n"
                   "    $root$__extensions,\n"
                   "    &obj->__extensions);\n");
-    FullSimpleIf(printer, vars, "rc != NGX_OK", "return rc;");
+    SimpleIf(printer, vars, "rc != NGX_OK");
+    SimpleIf(printer, vars, "rc == NGX_DECLINED");
+    GenerateUnpackUnknown(desc, printer);
+    Else(printer);
+    printer.Print("return rc;\n");
+    CloseBrace(printer);
+    CloseBrace(printer);
   } else {
-    SkipUnknown(printer);
+    GenerateUnpackUnknown(desc, printer);
   }
 
   printer.Print("break;\n");

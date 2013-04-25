@@ -7,6 +7,7 @@ noinst_HEADERS = \
 protongx_SOURCES = \
 	ngx_add.cc \
 	ngx_descriptor.cc \
+	ngx_descriptor_util.cc \
 	ngx_extension.cc \
 	ngx_field_util.cc \
 	ngx_flags.cc \

@@ -254,6 +254,28 @@ Generator::GeneratePackRange(const Descriptor::ExtensionRange *range,
 }
 
 void
+Generator::GeneratePackUnknown(const Descriptor *desc, io::Printer& printer)
+{
+  printer.Print("\n"
+		"if (obj->__unknown != NULL\n"
+		"    && obj->__unknown->elts != NULL\n"
+		"    && obj->__unknown->nelts > 0)\n");
+  OpenBrace(printer);
+  printer.Print("ngx_protobuf_unknown_field_t  *unk = obj->__unknown->elts;\n"
+		"ngx_uint_t                     i;\n"
+		"\n"
+		"for (i = 0; i < obj->__unknown->nelts; ++i) ");  
+  OpenBrace(printer);
+  printer.Print("rc = ngx_protobuf_pack_unknown_field(unk + i, ctx);\n"
+		"if (rc != NGX_OK) ");
+  OpenBrace(printer);
+  printer.Print("return rc;\n");
+  CloseBrace(printer);
+  CloseBrace(printer);
+  CloseBrace(printer);
+}
+		
+void
 Generator::GeneratePack(const Descriptor* desc, io::Printer& printer)
 {
   std::map<std::string, std::string> vars;
@@ -271,16 +293,16 @@ Generator::GeneratePack(const Descriptor* desc, io::Printer& printer)
   Indent(printer);
 
   printer.Print(vars,
-                "size_t    size = $root$__size(obj);\n");
+                "size_t     size = $root$__size(obj);\n");
 
   Flags flags(desc);
 
   if (flags.has_message() || flags.has_packed()) {
-    printer.Print("size_t    n;\n");
+    printer.Print("size_t     n;\n");
   }
 
-  if (desc->extension_range_count() > 0) {
-    printer.Print("ngx_int_t rc;\n");
+  if (desc->extension_range_count() > 0 || HasUnknownFields(desc)) {
+    printer.Print("ngx_int_t  rc;\n");
   }
 
   printer.Print("\n");
@@ -324,6 +346,10 @@ Generator::GeneratePack(const Descriptor* desc, io::Printer& printer)
     } else {
       GeneratePackRange(*ei++, printer);
     }
+  }
+
+  if (HasUnknownFields(desc)) {
+    GeneratePackUnknown(desc, printer);
   }
 
   printer.Print("\n"

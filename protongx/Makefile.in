@@ -52,6 +52,7 @@ am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
 am_protongx_OBJECTS = protongx-ngx_add.$(OBJEXT) \
 	protongx-ngx_descriptor.$(OBJEXT) \
+	protongx-ngx_descriptor_util.$(OBJEXT) \
 	protongx-ngx_extension.$(OBJEXT) \
 	protongx-ngx_field_util.$(OBJEXT) protongx-ngx_flags.$(OBJEXT) \
 	protongx-ngx_generate.$(OBJEXT) protongx-ngx_main.$(OBJEXT) \
@@ -187,6 +188,7 @@ noinst_HEADERS = \
 protongx_SOURCES = \
 	ngx_add.cc \
 	ngx_descriptor.cc \
+	ngx_descriptor_util.cc \
 	ngx_extension.cc \
 	ngx_field_util.cc \
 	ngx_flags.cc \
@@ -216,9 +218,9 @@ $(srcdir)/Makefile.in:  $(srcdir)/Makefile.am  $(am__configure_deps)
 	      exit 1;; \
 	  esac; \
 	done; \
-	echo ' cd $(top_srcdir) && $(AUTOMAKE) --gnu protongx/Makefile'; \
+	echo ' cd $(top_srcdir) && $(AUTOMAKE) --foreign protongx/Makefile'; \
 	$(am__cd) $(top_srcdir) && \
-	  $(AUTOMAKE) --gnu protongx/Makefile
+	  $(AUTOMAKE) --foreign protongx/Makefile
 .PRECIOUS: Makefile
 Makefile: $(srcdir)/Makefile.in $(top_builddir)/config.status
 	@case '$?' in \
@@ -286,6 +288,7 @@ distclean-compile:
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/protongx-ngx_add.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/protongx-ngx_descriptor.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/protongx-ngx_descriptor_util.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/protongx-ngx_extension.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/protongx-ngx_field_util.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/protongx-ngx_flags.Po@am__quote@
@@ -341,6 +344,20 @@ protongx-ngx_descriptor.obj: ngx_descriptor.cc
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='ngx_descriptor.cc' object='protongx-ngx_descriptor.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(protongx_CXXFLAGS) $(CXXFLAGS) -c -o protongx-ngx_descriptor.obj `if test -f 'ngx_descriptor.cc'; then $(CYGPATH_W) 'ngx_descriptor.cc'; else $(CYGPATH_W) '$(srcdir)/ngx_descriptor.cc'; fi`
+
+protongx-ngx_descriptor_util.o: ngx_descriptor_util.cc
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(protongx_CXXFLAGS) $(CXXFLAGS) -MT protongx-ngx_descriptor_util.o -MD -MP -MF $(DEPDIR)/protongx-ngx_descriptor_util.Tpo -c -o protongx-ngx_descriptor_util.o `test -f 'ngx_descriptor_util.cc' || echo '$(srcdir)/'`ngx_descriptor_util.cc
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/protongx-ngx_descriptor_util.Tpo $(DEPDIR)/protongx-ngx_descriptor_util.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='ngx_descriptor_util.cc' object='protongx-ngx_descriptor_util.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(protongx_CXXFLAGS) $(CXXFLAGS) -c -o protongx-ngx_descriptor_util.o `test -f 'ngx_descriptor_util.cc' || echo '$(srcdir)/'`ngx_descriptor_util.cc
+
+protongx-ngx_descriptor_util.obj: ngx_descriptor_util.cc
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(protongx_CXXFLAGS) $(CXXFLAGS) -MT protongx-ngx_descriptor_util.obj -MD -MP -MF $(DEPDIR)/protongx-ngx_descriptor_util.Tpo -c -o protongx-ngx_descriptor_util.obj `if test -f 'ngx_descriptor_util.cc'; then $(CYGPATH_W) 'ngx_descriptor_util.cc'; else $(CYGPATH_W) '$(srcdir)/ngx_descriptor_util.cc'; fi`
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/protongx-ngx_descriptor_util.Tpo $(DEPDIR)/protongx-ngx_descriptor_util.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='ngx_descriptor_util.cc' object='protongx-ngx_descriptor_util.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(protongx_CXXFLAGS) $(CXXFLAGS) -c -o protongx-ngx_descriptor_util.obj `if test -f 'ngx_descriptor_util.cc'; then $(CYGPATH_W) 'ngx_descriptor_util.cc'; else $(CYGPATH_W) '$(srcdir)/ngx_descriptor_util.cc'; fi`
 
 protongx-ngx_extension.o: ngx_extension.cc
 @am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(protongx_CXXFLAGS) $(CXXFLAGS) -MT protongx-ngx_extension.o -MD -MP -MF $(DEPDIR)/protongx-ngx_extension.Tpo -c -o protongx-ngx_extension.o `test -f 'ngx_extension.cc' || echo '$(srcdir)/'`ngx_extension.cc

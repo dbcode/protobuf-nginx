@@ -39,6 +39,10 @@ private:
   static void GenerateDescriptors(const Descriptor *desc,
                                   io::Printer& printer);
 
+  // ngx_descriptor_util.cc
+  static bool HasUnknownFields(const Descriptor *desc);
+  static bool HasExtensionFields(const Descriptor *desc);
+
   // ngx_extension.cc
   static void GenerateExtendeeDecls(const Descriptor *desc,
                                     io::Printer& printer);
@@ -64,7 +68,6 @@ private:
   static bool FieldIsPointer(const FieldDescriptor *field); 
 
   // ngx_methods.cc
-  static bool HasExtensionFields(const Descriptor *desc);
   static void GenerateMethodDecls(const Descriptor* desc,
                                   io::Printer& printer);
   static void GenerateMethods(const Descriptor* desc,
@@ -94,8 +97,9 @@ private:
                                 io::Printer& printer);
   static void GeneratePackRange(const Descriptor::ExtensionRange *range,
                                 io::Printer& printer);
-  static void GeneratePack(const Descriptor* desc,
-                           io::Printer& printer);
+  static void GeneratePackUnknown(const Descriptor *desc,
+				  io::Printer& printer);
+  static void GeneratePack(const Descriptor* desc, io::Printer& printer);
 
   // ngx_print.cc
   static void Indented(io::Printer& printer,
@@ -140,6 +144,8 @@ private:
                               io::Printer& printer);
 
   // ngx_unpack.cc
+  static void GenerateUnpackUnknown(const Descriptor *desc,
+				    io::Printer& printer);
   static void GenerateUnpack(const Descriptor* desc,
                              io::Printer& printer);
 };
