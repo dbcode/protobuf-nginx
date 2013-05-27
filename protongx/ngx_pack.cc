@@ -1,3 +1,5 @@
+#include <algorithm>
+
 #include <ngx_flags.h>
 #include <ngx_generator.h>
 #include <google/protobuf/descriptor.pb.h>
